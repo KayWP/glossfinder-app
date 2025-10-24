@@ -14,21 +14,20 @@ CREATE TABLE IF NOT EXISTS clusters (
     count INT
 );
 
--- Create temporary table matching your CSV structure
 CREATE TEMP TABLE IF NOT EXISTS temp_glosses (
-    term TEXT,
-    indicator TEXT,
-    glossed_as TEXT,
-    pre_context TEXT,
-    post_context TEXT,
-    page TEXT
+    "Term" TEXT,
+    "Indicator" TEXT,
+    "Glossed As" TEXT,
+    "Extended Context Pre" TEXT,
+    "Extended Context Post" TEXT,
+    "Page" TEXT
 );
 
 .mode csv
 .import preprocessed_csv.csv temp_glosses
 
-INSERT INTO glosses (term, indicator, glossed_as, pre_context, post_context, page)
-SELECT term, indicator, glossed_as, pre_context, post_context, page
+INSERT INTO glosses (term, indicator, glossed_as, page, pre_context, post_context)
+SELECT "Term", "Indicator", "Glossed As", "Page", "Extended Context Pre", "Extended Context Post"
 FROM temp_glosses;
 
 DROP TABLE temp_glosses;
