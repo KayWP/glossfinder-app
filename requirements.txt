@@ -1,1 +1,1 @@
-annotated_text
+st-annotated-text
