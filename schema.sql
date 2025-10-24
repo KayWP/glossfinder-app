@@ -1,38 +1,39 @@
-CREATE TABLE IF NOT EXISTS "glosses" (
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "term" TEXT,
-    "indicator" TEXT,
-    "glossed_as" TEXT,
-    "pre_context" TEXT,
-    "post_context" TEXT
+CREATE TABLE IF NOT EXISTS glosses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    term TEXT,
+    indicator TEXT,
+    glossed_as TEXT,
+    pre_context TEXT,
+    post_context TEXT,
+    page TEXT
 );
 
-CREATE TABLE IF NOT EXISTS "clusters" (
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "term" TEXT,
-    "count" INT
-)
+CREATE TABLE IF NOT EXISTS clusters (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    term TEXT,
+    count INT
+);
 
 -- Create temporary table matching your CSV structure
-CREATE TEMP TABLE temp_glosses (
-    "term" TEXT,
-    "indicator" TEXT,
-    "glossed_as" TEXT,
-    "page" TEXT,
-    "pre_context" TEXT,
-    "post_context" TEXT
+CREATE TEMP TABLE IF NOT EXISTS temp_glosses (
+    term TEXT,
+    indicator TEXT,
+    glossed_as TEXT,
+    pre_context TEXT,
+    post_context TEXT,
+    page TEXT
 );
 
--- Import CSV into temporary table
 .mode csv
-.skip 1
-.import output.csv temp_glosses
+.import preprocessed_csv.csv temp_glosses
 
--- Insert data from temp table into main table (excluding the 'page' column)
-INSERT INTO glosses (term, indicator, glossed_as, pre_context, post_context)
-SELECT term, indicator, glossed_as, pre_context, post_context FROM temp_glosses;
+INSERT INTO glosses (term, indicator, glossed_as, pre_context, post_context, page)
+SELECT term, indicator, glossed_as, pre_context, post_context, page
+FROM temp_glosses;
 
--- Clean up temporary table
 DROP TABLE temp_glosses;
 
--- 
+INSERT INTO clusters (term, count)
+SELECT term, COUNT(*) AS count
+FROM glosses
+GROUP BY term;
