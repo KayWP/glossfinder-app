@@ -3,7 +3,7 @@ import sqlite3
 import string
 from collections import Counter
 from annotated_text import annotated_text
-from utils import get_db_connection
+from contextlib import contextmanager
 
 st.title("Browse Terms Alphabetically")
 
@@ -19,6 +19,15 @@ for i, letter in enumerate(string.ascii_uppercase):
         st.session_state.selected_letter = letter
 
 selected_letter = st.session_state.selected_letter
+
+@contextmanager
+def get_db_connection():
+    """Context manager for database connections"""
+    con = sqlite3.connect("glosses.db")
+    try:
+        yield con
+    finally:
+        con.close()
 
 # --- Fetch terms ---
 @st.cache_data(show_spinner=False)
