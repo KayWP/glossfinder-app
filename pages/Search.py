@@ -2,13 +2,23 @@ import streamlit as st
 import sqlite3
 from annotated_text import annotated_text
 from collections import Counter
-from utils import get_db_connection
 from difflib import SequenceMatcher
 import re
+from contextlib import contextmanager
+
 
 # -----------------------------
 # 🔹 Helper functions
 # -----------------------------
+@contextmanager
+def get_db_connection():
+    """Context manager for database connections"""
+    con = sqlite3.connect("glosses.db")
+    try:
+        yield con
+    finally:
+        con.close()
+
 def write_result(precontext, term, indicator, postcontext):
     annotated_text(precontext, (term, "term", "#8ef"), (indicator, "ind."), postcontext)
 
