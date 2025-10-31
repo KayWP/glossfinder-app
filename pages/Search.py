@@ -8,12 +8,28 @@ from difflib import SequenceMatcher
 def write_result(precontext, term, indicator, postcontext):
     annotated_text(precontext, (term, "term", "#8ef"), (indicator, "ind."), postcontext)
 
+import re
+
 def bag_words(results):
+    # Extended Dutch stop words list
+    stop_words = {
+        'de', 'het', 'een', 'die', 'van', 'op', 'tussen', 'en', 'in', 'te', 
+        'dat', 'met', 'als', 'voor', 'naar', 'door', 'bij', 'aan', 'uit', 
+        'om', 'tot', 'over', 'onder', 'niet', 'is', 'was', 'zijn', 'wordt', 
+        'ook', 'maar', 'dan', 'toch', 'nog', 'al', 'er', 'wel', 'geen', 'dus'
+    }
+
     bag_of_words = []
+
     for id, term, indicator, gloss, precontext, postcontext, page in results:
-        if gloss:  # Check if gloss is not None
+        if gloss:
+            # Split by non-word characters (regex) and normalize to lowercase
             bag_of_words = bag_of_words + gloss.split()
-    return bag_of_words
+
+    # Filter out stop words
+    filtered_words = [w for w in bag_of_words if w not in stop_words]
+
+    return filtered_words
 
 def parse_page_info(page):
     """Extract inventory number, scan number, and create link from page string"""
