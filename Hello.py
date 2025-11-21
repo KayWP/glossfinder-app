@@ -71,6 +71,8 @@ st.markdown("""
 **📖 Browse Alphabetically**: Browse terms organized by their first letter  
 """)
 
+st.info("Be aware that this application uses text drawn directly from early modern colonial archives. It is likely to contain insensitive or hurtful language and descriptions.")
+
 # Optional: Add some statistics
 try:
     import sqlite3
