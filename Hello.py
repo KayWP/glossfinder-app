@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Glossary Browser",
+    page_title="VOC Gloss Explorer",
     page_icon="📚",
 )
 
