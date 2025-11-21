@@ -31,7 +31,7 @@ with col3:
         st.switch_page("pages/Search.py")
 
 st.markdown("""
-The dataset contains terms and explanations of words identified as **foreign loanwords**, along with counts of their occurrences and glossed instances, enabling historical and sociolinguistic research into language contact, adoption, and understanding over time.
+The dataset contains terms and explanations of words that **could be** foreign loanwords, along with counts of their occurrences and glossed instances, enabling research into language and understanding over time. Or just to help you understand what a word might mean in a VOC context!
 """)
             
 with st.expander("How it works"):
@@ -93,6 +93,9 @@ except Exception as e:
 
 # Sidebar link to explore more VOC data
 st.sidebar.markdown(
+    "👤 **App by** [Kay Pepping](https://www.linkedin.com/in/kaypepping/)."
+)
+st.sidebar.markdown(         
     "🔗 **Explore more VOC data:** [vocdata.nl](https://www.vocdata.nl)"
 )
 
